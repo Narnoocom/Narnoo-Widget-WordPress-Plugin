@@ -28,7 +28,7 @@
 extract( shortcode_atts( array(
     'div'               => '',
     'operator_id'       => '',
-    'product_id'        => '',
+    'booking_id'        => '',
     'hide_datepicker'   => '',
     'show_gallery'      => '',
     'show_pricing'      => '',
@@ -52,7 +52,7 @@ extract( shortcode_atts( array(
         return false;
     }
     //Product ID
-    if(empty($product_id)){
+    if(empty($booking_id)){
         return false;
     }
     $access_key = $option['widget_access_key'];

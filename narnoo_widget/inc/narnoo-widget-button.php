@@ -28,7 +28,7 @@
 extract( shortcode_atts( array(
     'div'       => '',
     'operator_id'       => '',
-    'product_id'        => '',
+    'booking_id'        => '',
     'size'      => '',
     'label'     => '',
     'variant'   => '',
@@ -47,7 +47,7 @@ extract( shortcode_atts( array(
         return false;
     }
     //Product ID
-    if(empty($product_id)){
+    if(empty($booking_id)){
         return false;
     }
 
