@@ -26,14 +26,14 @@
 
 
 extract( shortcode_atts( array(
-    'div'       => '',
-    'operator_id'       => '',
-    'booking_id'        => '',
-    'size'      => '',
-    'label'     => '',
-    'variant'   => '',
-    'expand'    => '',
-    'fill'      => ''
+    'div'           => '',
+    'operator_id'   => '',
+    'booking_id'    => '',
+    'size'          => '',
+    'label'         => '',
+    'variant'       => '',
+    'expand'        => '',
+    'fill'          => ''
 ), $atts ) );
 
     //We need to get the widget settings from the database	
@@ -54,15 +54,15 @@ extract( shortcode_atts( array(
     $access_key = $option['widget_access_key'];
     //Manage the div to hold the cart
     if( empty($div) ){
-        $div = 'narnoo-cart-widget';
+        $div = 'narnoo-button-widget';
     }else{
         $div = $div;
     }
     //Manage the size of the button
     if( empty($size) ){
-        $type = 'default';
+        $size = 'default';
     }else{
-        $type = $type;
+        $size = $size;
     }
     //Manage the label for the button
     if( empty($label) ){
@@ -76,17 +76,17 @@ extract( shortcode_atts( array(
     }else{
         $variant = $variant;
     }
-    //Manage the theme colour
-    if( empty($expand) ){
-        $expand = 'block';
+    if( empty($fill) ){
+        $fill = 'default';
     }else{
-        $expand = $expand;
+        $fill = $fill;
     }
+
     
 
     $script = "<script>
     (function (w, d, s, o, f, js, fjs) {
-        w['narnoo-button-widget'] = o;
+        w['narnoo-booking-button-widget'] = o;
         w[o] = w[o] || function () {
             (w[o].q = w[o].q || []).push(arguments)
         };
@@ -101,13 +101,40 @@ extract( shortcode_atts( array(
         element: \"".$div."\",
         access_key: \"".$access_key."\",
         operator_id: \"".$operator_id."\",
-        booking_id: \"".$product_id."\",
+        booking_id: \"".$booking_id."\",
         size: \"".$size."\",
         variant: \"".$variant."\",
         label: \"".$label."\",
-        expand: \"".$expand."\",";
+        fill: \"".$fill."\",";
+        if(!empty($expand)){
+            $script .= "expand: \"".$expand."\"";
+        }
     $script .= "});
     </script>";
+
+
+   /* $script = "<script>
+    (function (w, d, s, o, f, js, fjs) {
+        w['narnoo-booking-button-widget'] = o;
+        w[o] = w[o] || function () {
+            (w[o].q = w[o].q || []).push(arguments)
+        };
+        js = d.createElement(s), fjs = d.getElementsByTagName(s)[0];
+        js.id = o;
+        js.src = f;
+        js.async = 1;
+        fjs.parentNode.insertBefore(js, fjs);
+    }(window, document, 'script', 'narnooBooking','https://narnoo-booking-widget-dev.herokuapp.com/booking-button-widget.min.js'));
+
+    narnooBooking('init', {
+        element: \"narnoo-button-widget\",
+        access_key: \"".$access_key."\",
+        operator_id: \"".$operator_id."\",
+        booking_id: \"".$booking_id."\",
+        label: \"Check Booking\"
+    });
+</script>";*/
+
     
     add_action( 'wp_footer', function() use( $script ){
         echo $script;

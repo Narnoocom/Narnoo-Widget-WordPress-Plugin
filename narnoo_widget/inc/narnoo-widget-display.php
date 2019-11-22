@@ -40,12 +40,12 @@ extract( shortcode_atts( array(
     'button_expand'     => '',
     'button_fill'       => ''
 ), $atts ) );
-
-    //We need to get the widget settings from the database	
+    
+   //We need to get the widget settings from the database	
     $option = get_option( 'narnoo_widget_settings' );
     //If the access keys don't exist we have to return false
     if(empty($option['widget_access_key'])){
-        return false;
+        //return false;
     }
     //Operator ID
     if(empty($operator_id)){
@@ -119,7 +119,10 @@ extract( shortcode_atts( array(
         element: \"".$div."\",
         access_key: \"".$access_key."\",
         operator_id: \"".$operator_id."\",
-        booking_id: \"".$product_id."\",";
+        booking_id: \"".$booking_id."\",
+        dropdownOption:{
+            align: \"right\"
+        },";
         
         if(!empty($maxWidth)){
             $script .= "maxWidth: \"".$maxWidth."\",";

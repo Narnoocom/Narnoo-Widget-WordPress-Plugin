@@ -34,10 +34,10 @@ class Narnoo_Widget {
 		//add_action( 'init', array( &$this, 'create_custom_post_types' ) );
 
 		if ( is_admin() ) {
-			add_action( 'plugins_loaded', 		array( &$this, 'load_language_file' ) );
+			//add_action( 'plugins_loaded', 		array( &$this, 'load_language_file' ) );
 			add_filter( 'plugin_action_links', 	array( &$this, 'plugin_action_links' ), 10, 2 );
 
-			add_action( 'admin_notices', 		array( &$this, 'display_reminders' ) );
+			//add_action( 'admin_notices', 		array( &$this, 'display_reminders' ) );
 			add_action( 'admin_menu', 			array( &$this, 'create_menus' ), 9 );
 			add_action( 'admin_init', 			array( &$this, 'admin_init' ) );
 
@@ -60,6 +60,13 @@ class Narnoo_Widget {
 		function uninstall() {
 			unregister_setting( 'narnoo_widget_settings', 'narnoo_widget_settings', array( &$this, 'settings_sanitize' ) );
 		}
+		
+		/**
+	 * Load language file upon plugin init (for future extension, if any)
+	 **/
+	function load_language_file() {
+		load_plugin_textdomain( NARNOO_WIDGET_I18N_DOMAIN, false, NARNOO_WIDGET_PLUGIN_PATH . 'languages/' );
+	}
 
 		/**
 		 * Add settings link for this plugin to Wordpress 'Installed plugins' page.
