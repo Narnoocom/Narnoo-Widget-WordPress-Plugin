@@ -1,44 +1,22 @@
 <?php
-/*
-(function (w, d, s, o, f, js, fjs) {
-        w['narnoo-button-widget'] = o;
-        w[o] = w[o] || function () {
-            (w[o].q = w[o].q || []).push(arguments)
-        };
-        js = d.createElement(s), fjs = d.getElementsByTagName(s)[0];
-        js.id = o;
-        js.src = f;
-        js.async = 1;
-        fjs.parentNode.insertBefore(js, fjs);
-    }(window, document, 'script', 'narnooButton', 'https://narnoo-widget.herokuapp.com/button-widget.min.js'));
-
-    narnooButton('init', {
-        element: "narnoo-button-cart-widget",
-        label: "View Cart with label",
-        size: "small", // small, default, large
-        // variant: "", // green, blue, orange, navy, yellow, peach, red, beige, cyan, celadon, brown, cherry, purple, olive
-        // size: "default", // default, small, large
-        // expand: "", // block, full
-        // fill: "", // clear, outline
-        // cssClass: "" // custom CSS Class
-    });
-*/
-
 
 extract( shortcode_atts( array(
-    'div'               => '',
-    'operator_id'       => '',
-    'booking_id'        => '',
-    'hide_datepicker'   => '',
-    'show_gallery'      => '',
-    'show_pricing'      => '',
-    'maxWidth'          => '',
-    'variant'           => '',
-    'button_label'      => '',
-    'button_size'       => '',
-    'button_variant'    => '',
-    'button_expand'     => '',
-    'button_fill'       => ''
+    'div'                   => '',
+    'operator_id'           => '',
+    'booking_id'            => '',
+    'hide_datepicker'       => '',
+    'show_gallery'          => '',
+    'show_pricing'          => '',
+    'maxWidth'              => '',
+    'variant'               => '',
+    'button_label'          => '',
+    'button_size'           => '',
+    'button_variant'        => '',
+    'button_expand'         => '',
+    'button_fill'           => '',
+    'datepicker_type'       => 'range',
+    'datepicker_postion'    => 'left',
+    'datepicker_drops'      => 'down'
 ), $atts ) );
     
    //We need to get the widget settings from the database	
@@ -141,6 +119,12 @@ extract( shortcode_atts( array(
         }
         
         $script .= "variant: \"".$variant."\",
+
+        datepickerOption:{
+            type: \"".$datepicker_type."\",
+            position: \"".$datepicker_postion."\",
+            drops: \"".$datepicker_drops."\",
+        },
         buttonOptions: {
                 label: \"".$button_label."\",
                 variant: \"".$button_variant."\",

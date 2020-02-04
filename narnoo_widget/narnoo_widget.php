@@ -3,9 +3,9 @@
  * Plugin Name:       Narnoo Widget
  * Plugin URI:        https://www.narnoo.com/
  * Description:       Output the Narnoo widget code
- * Version:           1.0.0
- * Requires at least: 5.2.3
- * Requires PHP:      7.2
+ * Version:           1.0.1
+ * Requires at least: 5.3.2
+ * Requires PHP:      7.0
  * Author:            Narnoo.com
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -31,13 +31,9 @@ class Narnoo_Widget {
 	function __construct() {
 		register_uninstall_hook( __FILE__, array( 'NarnooWidget', 'uninstall' ) );
 
-		//add_action( 'init', array( &$this, 'create_custom_post_types' ) );
-
 		if ( is_admin() ) {
-			//add_action( 'plugins_loaded', 		array( &$this, 'load_language_file' ) );
 			add_filter( 'plugin_action_links', 	array( &$this, 'plugin_action_links' ), 10, 2 );
 
-			//add_action( 'admin_notices', 		array( &$this, 'display_reminders' ) );
 			add_action( 'admin_menu', 			array( &$this, 'create_menus' ), 9 );
 			add_action( 'admin_init', 			array( &$this, 'admin_init' ) );
 
@@ -46,7 +42,6 @@ class Narnoo_Widget {
 
 		} else {
 
-			//add_action( 'wp_enqueue_scripts', array( &$this, 'load_scripts' ) );
 			add_filter( 'widget_text', 'do_shortcode' );
 
 			add_shortcode('narnoo_cart_button', 		array( &$this, 'narnoo_cart_display_func' ));
