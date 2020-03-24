@@ -3,8 +3,8 @@
  * Plugin Name:       Narnoo Widget
  * Plugin URI:        https://www.narnoo.com/
  * Description:       Output the Narnoo widget code
- * Version:           1.0.1
- * Requires at least: 5.3.2
+ * Version:           1.0.2
+ * Requires at least: 5.3.0
  * Requires PHP:      7.0
  * Author:            Narnoo.com
  * License:           GPL v2 or later
@@ -32,8 +32,7 @@ class Narnoo_Widget {
 		register_uninstall_hook( __FILE__, array( 'NarnooWidget', 'uninstall' ) );
 
 		if ( is_admin() ) {
-
-			add_filter( 'plugin_action_links', 	array( &$this, 'plugin_action_links' ), 10, 2 );
+			//add_filter( 'plugin_action_links', 	array( &$this, 'plugin_action_links' ), 10, 2 );
 
 			add_action( 'admin_menu', 			array( &$this, 'create_menus' ), 9 );
 			add_action( 'admin_init', 			array( &$this, 'admin_init' ) );
