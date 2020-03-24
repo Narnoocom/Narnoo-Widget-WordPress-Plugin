@@ -3,9 +3,9 @@
  * Plugin Name:       Narnoo Widget
  * Plugin URI:        https://www.narnoo.com/
  * Description:       Output the Narnoo widget code
- * Version:           1.0.0
- * Requires at least: 5.2.3
- * Requires PHP:      7.2
+ * Version:           1.0.2
+ * Requires at least: 5.3.0
+ * Requires PHP:      7.0
  * Author:            Narnoo.com
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -13,7 +13,7 @@
 
 // plugin definitions
 define( 'NARNOO_WIDGET_PLUGIN_NAME', 'Narnoo Widget' );
-define( 'NARNOO_WIDGET_CURRENT_VERSION', '1.0.0' );
+define( 'NARNOO_WIDGET_CURRENT_VERSION', '1.0.2' );
 define( 'NARNOO_WIDGET_I18N_DOMAIN', 'narnoo-widget' );
 
 define( 'NARNOO_WIDGET_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -31,13 +31,9 @@ class Narnoo_Widget {
 	function __construct() {
 		register_uninstall_hook( __FILE__, array( 'NarnooWidget', 'uninstall' ) );
 
-		//add_action( 'init', array( &$this, 'create_custom_post_types' ) );
-
 		if ( is_admin() ) {
-			//add_action( 'plugins_loaded', 		array( &$this, 'load_language_file' ) );
-			add_filter( 'plugin_action_links', 	array( &$this, 'plugin_action_links' ), 10, 2 );
+			//add_filter( 'plugin_action_links', 	array( &$this, 'plugin_action_links' ), 10, 2 );
 
-			//add_action( 'admin_notices', 		array( &$this, 'display_reminders' ) );
 			add_action( 'admin_menu', 			array( &$this, 'create_menus' ), 9 );
 			add_action( 'admin_init', 			array( &$this, 'admin_init' ) );
 
@@ -46,7 +42,6 @@ class Narnoo_Widget {
 
 		} else {
 
-			//add_action( 'wp_enqueue_scripts', array( &$this, 'load_scripts' ) );
 			add_filter( 'widget_text', 'do_shortcode' );
 
 			add_shortcode('narnoo_cart_button', 		array( &$this, 'narnoo_cart_display_func' ));
@@ -60,7 +55,7 @@ class Narnoo_Widget {
 		function uninstall() {
 			unregister_setting( 'narnoo_widget_settings', 'narnoo_widget_settings', array( &$this, 'settings_sanitize' ) );
 		}
-		
+
 		/**
 	 * Load language file upon plugin init (for future extension, if any)
 	 **/
@@ -85,7 +80,7 @@ class Narnoo_Widget {
 		$option = get_option( 'narnoo_widget_settings' );
 
 		if( !empty($option['widget_custom_post_key']) ){
-			
+
 			$_noo_pages = explode(',', $option['widget_custom_post_key']);
 
 			if(is_array($_noo_pages) && count( $_noo_pages )){
@@ -223,10 +218,10 @@ class Narnoo_Widget {
 		$option = get_option( 'narnoo_widget_settings' );
 
 		if( !empty($input['widget_access_key']) || !empty($input['widget_custom_post_key']) ) {
-			
+
 			$new_input['widget_access_key'] 			= trim( $input['widget_access_key'] );
 			$new_input['widget_custom_post_key'] 		= trim( $input['widget_custom_post_key'] );
-	      
+
 		}
 
 		return $new_input;
@@ -236,7 +231,7 @@ class Narnoo_Widget {
 	 * Display API settings page.
 	 **/
 	function widget_settings_page() {
-		
+
 		?>
 		<div class="wrap">
 			<div class="icon32"><img src="<?php echo NARNOO_WIDGET_PLUGIN_URL; ?>/images/icon-32.png" /><br /></div>

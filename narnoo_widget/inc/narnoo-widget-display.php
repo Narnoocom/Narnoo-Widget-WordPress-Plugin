@@ -1,47 +1,27 @@
 <?php
-/*
-(function (w, d, s, o, f, js, fjs) {
-        w['narnoo-button-widget'] = o;
-        w[o] = w[o] || function () {
-            (w[o].q = w[o].q || []).push(arguments)
-        };
-        js = d.createElement(s), fjs = d.getElementsByTagName(s)[0];
-        js.id = o;
-        js.src = f;
-        js.async = 1;
-        fjs.parentNode.insertBefore(js, fjs);
-    }(window, document, 'script', 'narnooButton', 'https://narnoo-widget.herokuapp.com/button-widget.min.js'));
-
-    narnooButton('init', {
-        element: "narnoo-button-cart-widget",
-        label: "View Cart with label",
-        size: "small", // small, default, large
-        // variant: "", // green, blue, orange, navy, yellow, peach, red, beige, cyan, celadon, brown, cherry, purple, olive
-        // size: "default", // default, small, large
-        // expand: "", // block, full
-        // fill: "", // clear, outline
-        // cssClass: "" // custom CSS Class
-    });
-*/
-
 
 extract( shortcode_atts( array(
-    'div'               => '',
-    'operator_id'       => '',
-    'booking_id'        => '',
-    'hide_datepicker'   => '',
-    'show_gallery'      => '',
-    'show_pricing'      => '',
-    'maxWidth'          => '',
-    'variant'           => '',
-    'button_label'      => '',
-    'button_size'       => '',
-    'button_variant'    => '',
-    'button_expand'     => '',
-    'button_fill'       => ''
+    'div'                   => '',
+    'operator_id'           => '',
+    'booking_id'            => '',
+    'hide_datepicker'       => '',
+    'show_gallery'          => '',
+    'show_pricing'          => '',
+    'maxWidth'              => '',
+    'variant'               => '',
+    'button_label'          => '',
+    'button_size'           => '',
+    'button_variant'        => '',
+    'button_expand'         => '',
+    'button_fill'           => '',
+    'datepicker_type'       => 'range',
+    'datepicker_label'      => '',
+    'productoption_label'   => '',
+    'guestoption_label'     => '',
+    'timeoption_label'      => ''
 ), $atts ) );
-    
-   //We need to get the widget settings from the database	
+
+   //We need to get the widget settings from the database
     $option = get_option( 'narnoo_widget_settings' );
     //If the access keys don't exist we have to return false
     if(empty($option['widget_access_key'])){
@@ -68,7 +48,7 @@ extract( shortcode_atts( array(
     }else{
         $datepicker = false;
     }
-        
+
     //Manage the theme colour
     if( empty($variant) ){
         $variant = 'green';
@@ -100,7 +80,7 @@ extract( shortcode_atts( array(
     }else{
         $button_expand = $button_expand;
     }
-    
+
 
     $script = "<script>
     (function(w, d, s, o, f, js, fjs) {
@@ -123,7 +103,7 @@ extract( shortcode_atts( array(
         dropdownOption:{
             align: \"right\"
         },";
-        
+
         if(!empty($maxWidth)){
             $script .= "maxWidth: \"".$maxWidth."\",";
         }
@@ -139,8 +119,17 @@ extract( shortcode_atts( array(
         }else{
             $script .= "pricing: false,";
         }
-        
+
         $script .= "variant: \"".$variant."\",
+
+        datepickerOption:{";
+          if(!empty($datepicker_label)){
+            $script .= "label: \"".$datepicker_label."\"",
+          }
+          $script .=  "type: \"".$datepicker_type."\",
+            position: \"".$datepicker_postion."\",
+            drops: \"".$datepicker_drops."\",
+        },
         buttonOptions: {
                 label: \"".$button_label."\",
                 variant: \"".$button_variant."\",
@@ -151,9 +140,27 @@ extract( shortcode_atts( array(
                 $script .= "expand: \"".$button_expand."\"
         }";
 
+        if(!empty($productoption_label)){
+          $script .= "productOptions: {
+                  label: \"".$productoption_label."\"
+          },";
+        }
+
+        if(!empty($guestoption_label)){
+          $script .= "guestOptions: {
+                  label: \"".$guestoption_label."\"
+          },";
+        }
+
+        if(!empty($timeoption_label)){
+          $script .= "productTimeOptions: {
+                  label: \"".$timeoption_label."\"
+          },";
+        }
+
     $script .= "});
     </script>";
-    
+
     add_action( 'wp_footer', function() use( $script ){
         echo $script;
     });
