@@ -18,7 +18,10 @@ extract( shortcode_atts( array(
     'datepicker_label'      => '',
     'productoption_label'   => '',
     'guestoption_label'     => '',
-    'timeoption_label'      => ''
+    'timeoption_label'      => '',
+    'datepicker_postion'    => 'left',
+    'datepicker_type'       => 'range',
+    'datepicker_drops'      => 'down'
 ), $atts ) );
 
    //We need to get the widget settings from the database
@@ -124,7 +127,7 @@ extract( shortcode_atts( array(
 
         datepickerOption:{";
           if(!empty($datepicker_label)){
-            $script .= "label: \"".$datepicker_label."\"",
+            $script .= "label: \"".$datepicker_label."\",";
           }
           $script .=  "type: \"".$datepicker_type."\",
             position: \"".$datepicker_postion."\",
