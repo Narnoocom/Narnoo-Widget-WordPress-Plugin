@@ -3,7 +3,7 @@
  * Plugin Name:       Narnoo Widget
  * Plugin URI:        https://www.narnoo.com/
  * Description:       Output the Narnoo widget code
- * Version:           1.0.2
+ * Version:           1.0.5
  * Requires at least: 5.3.0
  * Requires PHP:      7.0
  * Author:            Narnoo.com
@@ -13,7 +13,7 @@
 
 // plugin definitions
 define( 'NARNOO_WIDGET_PLUGIN_NAME', 'Narnoo Widget' );
-define( 'NARNOO_WIDGET_CURRENT_VERSION', '1.0.2' );
+define( 'NARNOO_WIDGET_CURRENT_VERSION', '1.0.5' );
 define( 'NARNOO_WIDGET_I18N_DOMAIN', 'narnoo-widget' );
 
 define( 'NARNOO_WIDGET_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
