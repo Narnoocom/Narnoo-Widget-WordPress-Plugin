@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Extract the shortcode data
+ */
 extract( shortcode_atts( array(
     'div'                   => '',
     'operator_id'           => '',
@@ -84,7 +86,9 @@ extract( shortcode_atts( array(
         $button_expand = $button_expand;
     }
 
-
+    /**
+     * Embed script
+     */
     $script = "<script>
     (function(w, d, s, o, f, js, fjs) {
       w['narnoo-widget'] = o;
@@ -163,11 +167,15 @@ extract( shortcode_atts( array(
 
     $script .= "});
     </script>";
-
+    /**
+     * Add the script to the footer of the page to increase page load time.
+     */
     add_action( 'wp_footer', function() use( $script ){
         echo $script;
     });
 
-    //Output the DIV
+    /**
+     * Output the div holder in the correct place
+     */
     echo '<div id="'.$div.'"></div>';
 ?>

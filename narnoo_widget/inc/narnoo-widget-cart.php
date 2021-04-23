@@ -1,15 +1,21 @@
 <?php
-
+/**
+ * Extract the shortcode data
+ */
 extract( shortcode_atts( array(
-    'div'       => '',
-    'size'      => '',
-    'label'     => '',
-    'variant'   => '',
-    'expand'    => '',
-    'fill'      => '',
-    'cssClass'  => ''
+    'div'               => '',
+    'size'              => '',
+    'label'             => '',
+    'variant'           => '',
+    'expand'            => '',
+    'fill'              => '',
+    'css_class'         => '',
+    'max_width'         => '',
+    'custom_element'    => '',
 ), $atts ) );
-
+    /**
+     * Set up all the options
+     */
     //We need to get the widget settings from the database	
     $option = get_option( 'narnoo_widget_settings' );
     //If the access keys don't exist we have to return false
@@ -48,6 +54,23 @@ extract( shortcode_atts( array(
     }else{
         $expand = $expand;
     }
+
+    //Manage any custome CSS Classes
+    if( !empty($css_class)){
+        $css = $css_class;
+    }
+
+    //Manage max width
+    if(!empty('max_width')){
+        $maxWidth = $max_width;
+    }
+
+    //If custom element
+    $customButton = false;
+    if(!empty($custom_element)){
+        $customButton = true;
+        $div = $custom_element;
+    }
     
 
     $script = "<script>
@@ -64,25 +87,40 @@ extract( shortcode_atts( array(
     }(window, document, 'script', 'narnooButton', 'https://booking-widget.narnoo.com/button-widget.min.js'));
 
     narnooButton('init', {
-        element: \"".$div."\",
-        access_key: \"".$access_key."\",
-        size: \"".$size."\",
-        variant: \"".$variant."\",
-        label: \"".$label."\",
-        expand: \"".$expand."\",";
-        if( !empty($fill) ){
-            $script .= "fill: \"".$fill."\",";
-        }
-        if( !empty($cssClass) ){
-            $script .= "cssClass: \"".$cssClass."\" ";
+        element: \"".$div."\",";
+
+        if(!empty($customButton)){
+            $script .= "customCartButton: true,";
+        }else{
+            $script .= "customCartButton: false,";
+            $script .= "access_key: \"".$access_key."\",
+            size: \"".$size."\",
+            variant: \"".$variant."\",
+            label: \"".$label."\",
+            expand: \"".$expand."\",";
+            if( !empty($fill) ){
+                $script .= "fill: \"".$fill."\",";
+            }
+            if( !empty($css) ){
+                $script .= "cssClass: \"".$css."\" ";
+            }
+            if(!empty($maxWidth)){
+                $script .= "maxWidth: \"".$maxWidth."\"";
+            }
+
         }
     $script .= "});
     </script>";
-    
+
+    /**
+     * Add the script to the footer of the page to increase page load time.
+     */
     add_action( 'wp_footer', function() use( $script ){
         echo $script;
     });
 
-    //Output the DIV
+    /**
+     * Output the div holder in the correct place
+     */
     echo '<div id="'.$div.'"></div>';
 ?>

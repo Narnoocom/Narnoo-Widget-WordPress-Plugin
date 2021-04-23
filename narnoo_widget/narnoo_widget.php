@@ -1,9 +1,9 @@
 <?php
 /**
  * Plugin Name:       Narnoo Widget
- * Plugin URI:        https://www.narnoo.com/
- * Description:       Output the Narnoo widget code
- * Version:           1.0.5
+ * Plugin URI:        https://github.com/Narnoocom/Narnoo-Widget-WordPress-Plugin
+ * Description:       Easily embed your Narnoo supplier products within your website.
+ * Version:           1.0.7
  * Requires at least: 5.3.0
  * Requires PHP:      7.0
  * Author:            Narnoo.com
@@ -13,7 +13,7 @@
 
 // plugin definitions
 define( 'NARNOO_WIDGET_PLUGIN_NAME', 'Narnoo Widget' );
-define( 'NARNOO_WIDGET_CURRENT_VERSION', '1.0.5' );
+define( 'NARNOO_WIDGET_CURRENT_VERSION', '1.0.7' );
 define( 'NARNOO_WIDGET_I18N_DOMAIN', 'narnoo-widget' );
 
 define( 'NARNOO_WIDGET_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -56,7 +56,7 @@ class Narnoo_Widget {
 			unregister_setting( 'narnoo_widget_settings', 'narnoo_widget_settings', array( &$this, 'settings_sanitize' ) );
 		}
 
-		/**
+	/**
 	 * Load language file upon plugin init (for future extension, if any)
 	 **/
 	function load_language_file() {
@@ -76,6 +76,12 @@ class Narnoo_Widget {
 
 	}
 
+	/**
+	 * 
+	 * Creates a meta box if the user has identified post types for their tours.
+	 * @example: The tour might have a custom post type called tours. If the user has saved the refernce to tours then this meta box will show up on all tours CPT
+	 * 
+	 */
 	function noo_set_meta_boxes(){
 		$option = get_option( 'narnoo_widget_settings' );
 
@@ -93,7 +99,7 @@ class Narnoo_Widget {
 	                'noo-widget-class',      							// Unique ID
 				    'Enter Product Widget Information', 		 	    // Title
 				    array( &$this,'box_display_widget_narnoo'),    		// Callback function
-				    array( $_noo_load ),   		// Admin page (or post type)
+				    array( $_noo_load ),   								// Admin page (or post type)
 				    'side',         									// Context
 				    'low'         										// Priority
 	             );
@@ -104,8 +110,8 @@ class Narnoo_Widget {
 
 	/*
 	*
-	*	title: Display the operator listings box
-	*	date created: 15-09-16
+	*	@title: Display the operator widget box
+	*	
 	*/
 	function box_display_widget_narnoo( $post )
 	{
@@ -120,7 +126,7 @@ class Narnoo_Widget {
 	        <input type="text" name="noo_widget_operator" id="noo_widget_supplier" value="<?php echo $_supplier; ?>" style="width:100%"/>
 	    </p>
 	    <p>
-	    	<small><em>Enter the supplier ID</em></small>
+	    	<small><em>Enter the operator ID</em></small>
 	    </p>
 	    <p>
 	        <label for="listing_search_suburb">Product Id:</label>
@@ -133,7 +139,9 @@ class Narnoo_Widget {
         <?php
 
 	}
-
+	/**
+	 * Save the widget data to the WP database
+	 */
 	function save_noo_widget_data( $post_id ){
 
 		// Bail if we're doing an auto save
@@ -153,8 +161,10 @@ class Narnoo_Widget {
     	}
     }
 
-	 /* Add admin menus and submenus to backend.
-	 **/
+	 /**
+	  *  Add admin menus and submenus to backend.
+	  *  Creates the settings input where the user can store a reference to the CPT for the products 
+	  */ 
 	function create_menus() {
 		// add Narnoo API to settings menu
 		add_options_page(
@@ -165,7 +175,9 @@ class Narnoo_Widget {
 			array( &$this, 'widget_settings_page' )
 		);
 	}
-
+	/**
+	 * Init the administration process
+	 */
 	function admin_init() {
 		register_setting( 'narnoo_widget_settings', 'narnoo_widget_settings', array( &$this, 'settings_sanitize' ) );
 
@@ -213,7 +225,7 @@ class Narnoo_Widget {
 	}
 	/**
 	 * Sanitize input settings.
-	 **/
+	 */
 	function settings_sanitize( $input ) {
 		$option = get_option( 'narnoo_widget_settings' );
 
@@ -229,7 +241,7 @@ class Narnoo_Widget {
 
 	/**
 	 * Display API settings page.
-	 **/
+	 */
 	function widget_settings_page() {
 
 		?>
@@ -248,8 +260,10 @@ class Narnoo_Widget {
 	}
 
 	/**
-	 * Display single link gallery shortcode.
-	 * */
+	 * @item: SHORTCODE.
+	 * @description: Displays the cart embed object
+	 * @example: [narnoo_cart_button]
+	 */
 	function narnoo_cart_display_func($atts) {
 	    ob_start();
 	    require( NARNOO_WIDGET_PLUGIN_PATH . 'inc/narnoo-widget-cart.php' );
@@ -258,17 +272,22 @@ class Narnoo_Widget {
 	 }
 
 	 /**
-	 * Display single link gallery shortcode.
-	 * */
+	 * @item: SHORTCODE.
+	 * @description: Displays the embedded booking details object
+	 * @example: [narnoo_booking]
+	 */
 	function narnoo_booking_display_func($atts) {
 	    ob_start();
 	    require( NARNOO_WIDGET_PLUGIN_PATH . 'inc/narnoo-widget-display.php' );
 	    return ob_get_clean();
 
 	 }
+	 
 	 /**
-	 * Display narnoo_booking_button.
-	 * */
+	 * @item: SHORTCODE.
+	 * @description: Displays the booking button
+	 * @example: [narnoo_booking_button]
+	 */
 	function narnoo_booking_button_func($atts) {
 	    ob_start();
 	    require( NARNOO_WIDGET_PLUGIN_PATH . 'inc/narnoo-widget-button.php' );

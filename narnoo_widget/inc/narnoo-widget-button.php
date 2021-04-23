@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Extract the shortcode data
+ */
 extract( shortcode_atts( array(
     'div'           => '',
     'operator_id'   => '',
@@ -8,11 +10,16 @@ extract( shortcode_atts( array(
     'label'         => '',
     'variant'       => '',
     'expand'        => '',
-    'fill'          => ''
+    'fill'          => '',
+    'css_class'     => '',
+    'max_width'     => '',
 ), $atts ) );
-
+    /**
+     * Set up all the options
+     */
     //We need to get the widget settings from the database	
     $option = get_option( 'narnoo_widget_settings' );
+    
     //If the access keys don't exist we have to return false
     if(empty($option['widget_access_key'])){
         return false;
@@ -51,14 +58,27 @@ extract( shortcode_atts( array(
     }else{
         $variant = $variant;
     }
+    //Manage the fill colour
     if( empty($fill) ){
         $fill = 'default';
     }else{
         $fill = $fill;
     }
 
-    
+    //Manage any custome CSS Classes
+    if( !empty($css_class)){
+        $css = $css_class;
+    }
 
+    //Manage max width
+    if(!empty('max_width')){
+        $maxWidth = $max_width;
+    }
+
+    
+    /**
+     * Embed script
+     */
     $script = "<script>
     (function (w, d, s, o, f, js, fjs) {
         w['narnoo-booking-button-widget'] = o;
@@ -84,37 +104,24 @@ extract( shortcode_atts( array(
         if(!empty($expand)){
             $script .= "expand: \"".$expand."\"";
         }
+        if(!empty($css)){
+            $script .= "cssClass: \"".$css."\"";
+        }
+        if(!empty($maxWidth)){
+            $script .= "maxWidth: \"".$maxWidth."\"";
+        }
     $script .= "});
     </script>";
 
-
-   /* $script = "<script>
-    (function (w, d, s, o, f, js, fjs) {
-        w['narnoo-booking-button-widget'] = o;
-        w[o] = w[o] || function () {
-            (w[o].q = w[o].q || []).push(arguments)
-        };
-        js = d.createElement(s), fjs = d.getElementsByTagName(s)[0];
-        js.id = o;
-        js.src = f;
-        js.async = 1;
-        fjs.parentNode.insertBefore(js, fjs);
-    }(window, document, 'script', 'narnooBooking','https://narnoo-booking-widget-dev.herokuapp.com/booking-button-widget.min.js'));
-
-    narnooBooking('init', {
-        element: \"narnoo-button-widget\",
-        access_key: \"".$access_key."\",
-        operator_id: \"".$operator_id."\",
-        booking_id: \"".$booking_id."\",
-        label: \"Check Booking\"
-    });
-</script>";*/
-
-    
+    /**
+     * Add the script to the footer of the page to increase page load time.
+     */
     add_action( 'wp_footer', function() use( $script ){
         echo $script;
     });
 
-    //Output the DIV
+    /**
+     * Output the div holder in the correct place
+     */
     echo '<div id="'.$div.'"></div>';
 ?>
