@@ -13,6 +13,7 @@ extract( shortcode_atts( array(
     'fill'          => '',
     'css_class'     => '',
     'max_width'     => '',
+    'on_click'      => '',
 ), $atts ) );
     /**
      * Set up all the options
@@ -71,8 +72,13 @@ extract( shortcode_atts( array(
     }
 
     //Manage max width
-    if(!empty('max_width')){
+    if(!empty($max_width)){
         $maxWidth = $max_width;
+    }
+
+    //Manage onclick
+    if(!empty($on_click)){
+        $onClick = $on_click;
     }
 
     
@@ -102,13 +108,16 @@ extract( shortcode_atts( array(
         label: \"".$label."\",
         fill: \"".$fill."\",";
         if(!empty($expand)){
-            $script .= "expand: \"".$expand."\"";
+            $script .= "expand: \"".$expand."\",";
         }
         if(!empty($css)){
-            $script .= "cssClass: \"".$css."\"";
+            $script .= "cssClass: \"".$css."\",";
         }
         if(!empty($maxWidth)){
-            $script .= "maxWidth: \"".$maxWidth."\"";
+            $script .= "maxWidth: \"".$maxWidth."\",";
+        }
+        if(!empty($onClick)){
+            $script .= "onClickEvent: \"".$onClick."\",";
         }
     $script .= "});
     </script>";
